@@ -33,13 +33,13 @@ def api_echo():
 
 @app.route('/nodes/<nodeid>')
 def api_node(nodeid):
-    #Change this to dynamically grab a node from database
+    # Change this to dynamically grab a node from database
     data = {
-        'Network' : 10,
-        'Ownership' : 'Residence owner',
-        'Platform' : 'ARM',
-        'RAM' : 500,
-        'id' : nodeid
+        'Network': 10,
+        'Ownership': 'Residence owner',
+        'Platform': 'ARM',
+        'RAM': 500,
+        'id': nodeid
             }
     js = json.dumps(data)
     resp = Response(js, status=200, mimetype='application/json')
@@ -47,4 +47,4 @@ def api_node(nodeid):
 
 
 if __name__ == '__main__':
-    app.run();
+    app.run(port=60000);
