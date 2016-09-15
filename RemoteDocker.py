@@ -1,1 +1,0 @@
-#Class for interfacing with docker engine remotely.
