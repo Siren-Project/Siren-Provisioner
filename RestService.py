@@ -103,14 +103,25 @@ class RestService:
         return resp
     #    return 'List of ' + url_for('api_nodes')
 
+    #Just a single node at the moment
     @app.route('/nodes/<nodeid>/provision_docker', methods=['POST'])
-    def api_provision_docker(nodeid):
+    def api_provision_docker(node_ids):
         if not request.json or not 'docker_name' in request.json:
             abort(400)
+
+        deployer.
 
        # return "Provisioned " + request.json['docker_name'] + " to " + nodeid
         resp = Response(json.dumps({'docker_name': request.json['docker_name']}), status=200, mimetype='application/json')
         return resp
+
+
+    @app.route('/nodes/provision_docker', methods=['POST'])
+    def api_provision_dockers(self):
+        resp = Response(json.dumps({'requests': request.json['requests']}), status=200, mimetype='application/json')
+        return resp
+
+
 
     @app.route('/nodes/<nodeid>')
     def api_node(nodeid):

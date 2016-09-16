@@ -20,3 +20,4 @@ class Discovery:
     def get_node(self, node_id):
         if self.devices:
             return self.devices[0]
+

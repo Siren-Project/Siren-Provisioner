@@ -12,9 +12,12 @@ class Device:
         self.info = self.connection.info()
 
     def get_ram(self):
-
+        pass
     def get_cpu(self):
-
+        pass
     def get_info(self):
+        pass
+    def get_connection(self):
+        return self.connection
 
 
