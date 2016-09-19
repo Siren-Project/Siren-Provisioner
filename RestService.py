@@ -105,11 +105,11 @@ class RestService:
 
     #Just a single node at the moment
     @app.route('/nodes/<nodeid>/provision_docker', methods=['POST'])
-    def api_provision_docker(node_ids):
-        if not request.json or not 'docker_name' in request.json:
+    def api_provision_docker(self, node_ids):
+        if not request.json or not 'image_name' in request.json:
             abort(400)
 
-        deployer.
+        self.deployer.deploy_docker(0, request.json['image_name'])
 
        # return "Provisioned " + request.json['docker_name'] + " to " + nodeid
         resp = Response(json.dumps({'docker_name': request.json['docker_name']}), status=200, mimetype='application/json')
@@ -124,7 +124,7 @@ class RestService:
 
 
     @app.route('/nodes/<nodeid>')
-    def api_node(nodeid):
+    def api_node(self, nodeid):
         # Change this to dynamically grab a node from database
         data = {
             'Network': 10,
@@ -165,5 +165,8 @@ class RestService:
     if __name__ == '__main__':
         app.run(port=60000)
 
-    def __init__(self):
+    def __init__(self, deployer, discovery):
         self.app.run(port=60000)
+        self.deployer = deployer
+        self.discovery = discovery
+

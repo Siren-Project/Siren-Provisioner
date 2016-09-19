@@ -2,8 +2,8 @@ from Device import *
 
 #Service that discovers new devices. In future work this will be split out into a separate server.
 class Discovery:
-    ips = ['148.88.227.179']
-    devices = None #Should probably be a dictionary where device id is the key
+    ips = ['148.88.227.179', '148.88.227.232'] # read from file
+    devices = [] #Should probably be a dictionary where device id is the key
 
     def __init__(self):
         self.discover_devices()
