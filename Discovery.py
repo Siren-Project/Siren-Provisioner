@@ -12,12 +12,14 @@ class Discovery:
 
     def discover_devices(self):
         for ip in self.ips:
-            self.devices.append(Device(ip))
+            self.devices.append(Device(ip, ip))
 
     def get_devices(self):
         return self.devices
 
     def get_node(self, node_id):
         if self.devices:
-            return self.devices[0]
+            for device in self.devices:
+                if device.get_id() == node_id:
+                    return device
 

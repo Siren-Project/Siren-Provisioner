@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request, Response
 import json
-
+import logging
 class RestService:
 
 #class RestService:
@@ -8,13 +8,13 @@ class RestService:
 
     app = Flask(__name__)
 
-
-
+    deployer = None
+    discovery = None
     @app.route('/')
     def api_root():
         return 'Welcome'
 
-    @app.route('/nodes', methods = ['GET'])
+    @app.route('/nodes', methods=['GET'])
     def api_nodes():
         #Get these from a database or at least a dynamic data list.
         #Data needs to include list of services
@@ -38,7 +38,7 @@ class RestService:
                             'RAM': 200,
                             'Bandwidth': 5
                         }
-                    ][1,2]
+                    ]
                 },
                 {
                     'Network': 10000,
@@ -107,18 +107,22 @@ class RestService:
     @app.route('/nodes/<nodeid>/provision_docker', methods=['POST'])
     def api_provision_docker(self, node_ids):
         if not request.json or not 'image_name' in request.json:
-            abort(400)
+            pass
 
         self.deployer.deploy_docker(0, request.json['image_name'])
 
        # return "Provisioned " + request.json['docker_name'] + " to " + nodeid
-        resp = Response(json.dumps({'docker_name': request.json['docker_name']}), status=200, mimetype='application/json')
+        resp = Response(json.dumps({'image_name': request.json['image_name']}), status=200, mimetype='application/json')
         return resp
 
-
-    @app.route('/nodes/provision_docker', methods=['POST'])
-    def api_provision_dockers(self):
-        resp = Response(json.dumps({'requests': request.json['requests']}), status=200, mimetype='application/json')
+    #image_name nodes ram hours
+    @app.route('/nodes/provision_dockers', methods=['POST', 'GET'])
+    def api_provision_dockers():
+        logging.info(request.json)
+        if not request.json or 'image_name' not in request.json or 'nodes' not in request.json or 'port_bindings' not in request.json or 'ram' not in request.json or 'hours' not in request.json:
+            return "Error, did not include correct request information"
+        deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: request.json['port_bindings']['external']}, request.json['ram'], request.json['hours'])
+        resp = Response(json.dumps({'image_name': request.json['image_name']}), status=200, mimetype='application/json')
         return resp
 
 
@@ -160,13 +164,20 @@ class RestService:
 
         return "TODO. Delete container on node"
 
+    @app.route('/reset_all', methods=['DELETE'])
+    def api_reset_all():
+        for device in discovery.get_devices():
+            device.wipe()
+        return "Scenario reset"
 
+   # if __name__ == '__main__':
+   #     app.run(port=60000)
 
-    if __name__ == '__main__':
-        app.run(port=60000)
+    def __init__(self, dep, dis):
+        global deployer, discovery
+        deployer = dep
+        discovery = dis
 
-    def __init__(self, deployer, discovery):
+        self.app.debug = True
         self.app.run(port=60000)
-        self.deployer = deployer
-        self.discovery = discovery
 
