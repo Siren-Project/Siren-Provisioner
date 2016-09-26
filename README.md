@@ -12,15 +12,20 @@ For visualisation of the provsioner and the Fog infrastructure see: https://gith
 
 Example usage: GET http://127.0.0.1:60000/nodes
 
+All post requests take JSON input.
+
+For a simple orchestration program, only /nodes and /provision_x should be required.
+
 ### GET
 
-/nodes
+/nodes TODO
 
 /nodes/{id}
 
 ### POST
 
 /provision_dockers
+[List nodes] This takes a list of IDs which correspond computes. [String image_name] A single image name to be deployed accross the nodes. [Int ram] An ammount of RAM. [Int hours] A number of hours for the service to run.
 
 /provision_toscas TODO
 
