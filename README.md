@@ -17,25 +17,21 @@ All post requests take JSON input.
 For a simple orchestration program, only /nodes and /provision_x should be required.
 
 ### GET
-'''bash
-/nodes
-'''
+
+'/nodes'
+
 This returns a list such as [{"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
-'''bash
-/nodes/{id}
-'''
+
+'/nodes/{id}'
+
 ### POST
-'''bash
-'/provision_dockers
-'''
+
+'/provision_dockers'
 [List nodes] This takes a list of IDs which correspond computes. (Get this information from /nodes) [String image_name] A single image name to be deployed accross the nodes. [Int ram] An ammount of RAM. [Int hours] A number of hours for the service to run.
-'''bash
-/provision_toscas' TODO
-'''
+
+'/provision_toscas' TODO
+
 ### DELETE
-'''bash
-/remove_service_by_id
-'''
-'''bash
-/remove_service
-'''
+'/remove_service_by_id'
+
+'/remove_service'
