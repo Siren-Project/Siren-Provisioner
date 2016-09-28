@@ -23,3 +23,8 @@ class Discovery:
                 if device.get_id() == node_id:
                     return device
 
+    def get_topology(self):
+        topology = []
+        for device in self.devices:
+            topology.append({'id': device.get_id(), 'total_memory': device.get_total_memory(), 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
+        return topology

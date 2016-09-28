@@ -18,102 +18,100 @@ class RestService:
     def api_nodes():
         #Get these from a database or at least a dynamic data list.
         #Data needs to include list of services
-        data = {
-            'Nodes' : [
-                {
-                    'Network': 10,
-                    'Location': 'Home',
-                    'Ownership': 'Residence owner',
-                    'Platform': 'ARM',
-                    'RAM': 500,
-                    'ID': 2,
-                    'Services' : [
-                        {
-                            'ID': 443634,
-                            'RAM': 20,
-                            'Bandwidth': 1
-                         },
-                        {
-                            'ID': 1251,
-                            'RAM': 200,
-                            'Bandwidth': 5
-                        }
-                    ]
-                },
-                {
-                    'Network': 10000,
-                    'Location': 'ISP core',
-                    'Ownership': 'BT',
-                    'Platform': 'ARM',
-                    'RAM': 10000,
-                    'ID': 2,
-                    'Services': [
-                        {
-                            'ID': 145634,
-                            'RAM': 20,
-                            'Bandwidth': 1
-                        },
-                        {
-                            'ID': 14534,
-                            'RAM': 200,
-                            'Bandwidth': 5
-                        },
-                        {
-                            'ID': 14535,
-                            'RAM': 200,
-                            'Bandwidth': 5
-                        },
-                        {
-                            'ID': 14536,
-                            'RAM': 200,
-                            'Bandwidth': 5
-                        },
-                        {
-                            'ID': 14537,
-                            'RAM': 200,
-                            'Bandwidth': 5
-                        }
-                    ]
-
-                },
-                {
-                    'Network': 1000,
-                    'Location': 'Telephone exchange',
-                    'Ownership': 'BT',
-                    'Platform': 'ARM',
-                    'RAM': 5000,
-                    'ID': 3,
-                    'Services': [
-                        {
-                            'ID': 125634,
-                            'RAM': 20,
-                            'Bandwidth': 1
-                        },
-                        {
-                            'ID': 1451,
-                            'RAM': 200,
-                            'Bandwidth': 5
-                        }
-                    ]
-                }
-            ]
-        }
-
+        # data = {
+        #     'Nodes' : [
+        #         {
+        #             'Network': 10,
+        #             'Location': 'Home',
+        #             'Ownership': 'Residence owner',
+        #             'Platform': 'ARM',
+        #             'RAM': 500,
+        #             'ID': 2,
+        #             'Services' : [
+        #                 {
+        #                     'ID': 443634,
+        #                     'RAM': 20,
+        #                     'Bandwidth': 1
+        #                  },
+        #                 {
+        #                     'ID': 1251,
+        #                     'RAM': 200,
+        #                     'Bandwidth': 5
+        #                 }
+        #             ]
+        #         },
+        #         {
+        #             'Network': 10000,
+        #             'Location': 'ISP core',
+        #             'Ownership': 'BT',
+        #             'Platform': 'ARM',
+        #             'RAM': 10000,
+        #             'ID': 2,
+        #             'Services': [
+        #                 {
+        #                     'ID': 145634,
+        #                     'RAM': 20,
+        #                     'Bandwidth': 1
+        #                 },
+        #                 {
+        #                     'ID': 14534,
+        #                     'RAM': 200,
+        #                     'Bandwidth': 5
+        #                 },
+        #                 {
+        #                     'ID': 14535,
+        #                     'RAM': 200,
+        #                     'Bandwidth': 5
+        #                 },
+        #                 {
+        #                     'ID': 14536,
+        #                     'RAM': 200,
+        #                     'Bandwidth': 5
+        #                 },
+        #                 {
+        #                     'ID': 14537,
+        #                     'RAM': 200,
+        #                     'Bandwidth': 5
+        #                 }
+        #             ]
+        #
+        #         },
+        #         {
+        #             'Network': 1000,
+        #             'Location': 'Telephone exchange',
+        #             'Ownership': 'BT',
+        #             'Platform': 'ARM',
+        #             'RAM': 5000,
+        #             'ID': 3,
+        #             'Services': [
+        #                 {
+        #                     'ID': 125634,
+        #                     'RAM': 20,
+        #                     'Bandwidth': 1
+        #                 },
+        #                 {
+        #                     'ID': 1451,
+        #                     'RAM': 200,
+        #                     'Bandwidth': 5
+        #                 }
+        #             ]
+        #         }
+        #     ]
+        # }
+        data = discovery.get_topology()
         resp = Response(json.dumps(data))
         return resp
     #    return 'List of ' + url_for('api_nodes')
 
     #Just a single node at the moment
-    @app.route('/nodes/<nodeid>/provision_docker', methods=['POST'])
-    def api_provision_docker(self, node_ids):
-        if not request.json or not 'image_name' in request.json:
-            pass
-
-        self.deployer.deploy_docker(0, request.json['image_name'])
-
+#    @app.route('/nodes/<nodeid>/provision_docker', methods=['POST'])
+#    def api_provision_docker(self, node_ids):
+#        if not request.json or not 'image_name' in request.json:
+#            pass
+#        self.deployer.deploy_docker(0, request.json['image_name'])
        # return "Provisioned " + request.json['docker_name'] + " to " + nodeid
-        resp = Response(json.dumps({'image_name': request.json['image_name']}), status=200, mimetype='application/json')
-        return resp
+#        resp = Response(json.dumps({'image_name': request.json['image_name']}), status=200, mimetype='application/json')
+#        return resp
 
     #image_name nodes ram hours
     @app.route('/nodes/provision_dockers', methods=['POST', 'GET'])
@@ -121,11 +119,10 @@ class RestService:
         logging.info(request.json)
         if not request.json or 'image_name' not in request.json or 'nodes' not in request.json or 'port_bindings' not in request.json or 'ram' not in request.json or 'hours' not in request.json:
             return "Error, did not include correct request information"
-        deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: request.json['port_bindings']['external']}, request.json['ram'], request.json['hours'])
-        resp = Response(json.dumps({'image_name': request.json['image_name']}), status=200, mimetype='application/json')
+        #    def deploy_dockers(self, node_ids, image_name, port_bindings, hours, ram=0, ports=None):
+        service_id = deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: request.json['port_bindings']['external']}, request.json['hours'], request.json['ram'])
+        resp = Response(json.dumps({'service_id': service_id}), status=200, mimetype='application/json')
         return resp
-
-
 
     @app.route('/nodes/<nodeid>')
     def api_node(self, nodeid):
@@ -177,7 +174,7 @@ class RestService:
         global deployer, discovery
         deployer = dep
         discovery = dis
-
-        self.app.debug = True
-        self.app.run(port=60000)
+        self.app.use_reloader=False
+        #self.app.debug = True
+        self.app.run(port=60000, threaded=True)
 

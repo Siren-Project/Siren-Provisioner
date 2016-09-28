@@ -1,29 +1,49 @@
 import logging
-from threading import Thread
+# from threading import Thread
+# from time import sleep
 import time
-from time import sleep
+import threading
+
 
 class LifecycleManager:
 
-
-    services = []
+    #Service id: ([List of nodes], duration secs)
 
 
         #duration is in hours, supports doubles
-    def register_service(self, node_ids, duration):
-        self.append({node_ids, time.time()+(duration*60*60)})
-        #add duration to current time
-        pass
+    def register_service(self, node_ids, duration, service_id):
+        self.services[service_id] = (node_ids, time.time()+(duration*60*60))
+        logging.info("Service time = %d seconds", duration*60*60)
 
     def monitor_and_enforce(self):
-        while True:
-            logging.info("Hi %d", int(time.time()))
-            for service in services:
-                service
-            sleep(1)
+        services_to_pop = []
+        logging.info("%s", self.services.keys())
+        #logging.info("%d", time.time())
+        for service_id in self.services.keys():
+
+            logging.info("Service time left %d seconds", self.services[service_id][1]-time.time())
+            if self.services[service_id][1]-time.time() < 1:
+                services_to_pop.append(service_id)
+                logging.info("Services to pop %s", services_to_pop)
+
+        for service_id in services_to_pop:
+            logging.info("Terminating service with service_id %d", service_id)
+#            t = threading.Thread(target=self.terminate_service, args=service_id).start()
+            self.terminate_service(service_id)
+            self.services.pop(service_id)
+        threading.Timer(1, self.monitor_and_enforce).start()
+
+    def terminate_service(self, service_id):
+        # get nodes associated with service
+        for node_id in self.services[service_id][0]:
+            threading.Thread(target=self.discovery.get_node(node_id).terminate_service,
+                             args=(service_id,)).start()
+            #self.discovery.get_node(node_id).terminate_service(service_id)
 
 
     def __init__(self, discovery):
         self.discovery = discovery
-        thread = Thread(name="monitor_and_enforce", target=self.monitor_and_enforce)
+        self.services = {} #1: (["148.88.227.232"], time.time()+10), 2: (["148.88.227.179"], time.time()+5)
+        thread = threading.Thread(target=self.monitor_and_enforce)
+        thread.daemon = True
         thread.start()

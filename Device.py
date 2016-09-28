@@ -10,14 +10,34 @@ class Device:
         logging.info("Creating new device with IP %s", ip)
         self.ip = ip
         self.id = identifier
-        self.create_connection();
+        self.create_connection()
+        self.info = self.connection.info()
+        self.reserved_memory = 0
+        if 'raspberrypi' in self.info['Name']:
+            self.location = "residence"
+        self.total_memory = self.info['MemTotal']
+        self.arch = self.info['Architecture']
+        self.service_id_to_container_id = {}
+
+        logging.info("Device memory: %sMB, location: %s, architecture: %s ", self.total_memory/1024/1024, self.location, self.arch)
+
+        #
+        # self.location =
 
     def create_connection(self):
         self.connection = Client(base_url='tcp://'+self.ip+":64243")
         self.info = self.connection.info()
 
-    def get_ram(self):
-        pass
+    def get_id(self):
+        return self.id
+    def get_total_memory(self):
+        return self.total_memory
+    def get_arch(self):
+        return self.arch
+    def get_reserved_memory(self):
+        return self.reserved_memory
+    def get_location(self):
+        return self.location
     def get_cpu(self):
         pass
     def get_info(self):
@@ -25,25 +45,28 @@ class Device:
     def get_id(self):
         return self.id
 
-    #memory, lifespan? (this might be managed by the provisioner),
-    def create_container(self, image, ports, port_bindings):
+    #Accepts ram in MegaBytes
+    def create_container(self, image, ports, port_bindings, ram, service_id):
         self.connection.pull(image)
 
         container = self.connection.create_container(image=image, ports=ports,
                                                      host_config=self.connection.create_host_config(
-                                                         port_bindings=port_bindings))
+                                                         port_bindings=port_bindings, mem_limit=str(ram)+"m"))
         #Create host config, this may overwrite previous config
         try:
             self.connection.start(container.get('Id'))
+            self.service_id_to_container_id[service_id] = container.get('Id')
             logging.info("Successfully ran container on %s", self.ip)
         except Exception as err:
             logging.warning('Error: Could not start container on node %s with ip %s because: %s', self.id, self.ip, err)
-
+        logging.info("Services on this node %s", self.service_id_to_container_id)
         return container
 
     def wipe(self):
             containers = self.get_container_ids()
             images = self.get_image_ids()
+            self.reserved_memory = 0
+
 
             for c in containers:
                 try:
@@ -80,7 +103,6 @@ class Device:
 
     def remove_container(self, container_id):
         self.connection.remove_container(container_id, force=True)
-        pass
 
     def remove_image(self, image_name):
         self.connection.remove_image(image_name, force=True)
@@ -88,4 +110,10 @@ class Device:
     def get_connection(self):
         return self.connection
 
+    def get_container_ids_from_service_id(self, service_id):
+        return self.service_id_to_container_id[service_id]
 
+    def terminate_service(self, service_id):
+        logging.info("Terminating service %s on node %s with IP %s", service_id, self.id, self.ip)
+
+        self.remove_container(self.service_id_to_container_id[service_id])
