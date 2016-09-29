@@ -31,13 +31,16 @@ This returns a list such as [{"reserved_memory": 0, "total_memory": 1020391424, 
 ```
 /provision_dockers
 ```
+
 [List nodes] This takes a list of IDs which correspond computes. (Get this information from /nodes) [String image_name] A single image name to be deployed accross the nodes. [Int ram] An ammount of RAM. [Int hours] A number of hours for the service to run.
 
 ```
 /provision_toscas
-``` TODO
+``` 
+TODO
 
 ### DELETE
+
 ```
 /remove_service_by_id
 ```
