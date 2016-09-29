@@ -17,33 +17,43 @@ All post requests take JSON input.
 For a simple orchestration program, only /nodes and /provision_x should be required.
 
 ### GET
+#### nodes
+This returns a list like this one: [{"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
 
 ```
 /nodes
 ```
-This returns a list such as [{"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
+
+#### nodes/{id}
+This returns information about a single node. Not sure how useful this is.
 
 ```
 /nodes/{id}
 ```
+
+
 ### POST
+#### provision_dockers
+[List nodes] This takes a list of IDs which correspond computes. (Get this information from /nodes) [String image_name] A single image name to be deployed across the nodes. [Int ram] An amount of RAM. [Int hours] A number of hours for the service to run.
 
 ```
 /provision_dockers
 ```
 
-[List nodes] This takes a list of IDs which correspond computes. (Get this information from /nodes) [String image_name] A single image name to be deployed accross the nodes. [Int ram] An ammount of RAM. [Int hours] A number of hours for the service to run.
-
+#### provision_toscas
+TODO
 ```
 /provision_toscas
 ``` 
-TODO
+
 
 ### DELETE
-
+#### remove_service_by_id
 ```
 /remove_service_by_id
 ```
+
+#### remove_service
 
 ```
 /remove_service
