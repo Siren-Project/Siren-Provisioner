@@ -5,7 +5,7 @@ A VNF provisioner for the Siren project. This is intended to be a modular compon
 **Complementary component to this: https://github.com/broadbent/airship
 
 
-For visualisation of the provsioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
+For visualisation of the provisioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
 
 
 ##  Northbound RESTful API
@@ -15,6 +15,12 @@ Example usage: GET http://127.0.0.1:60000/nodes
 All post requests take JSON input.
 
 For a simple orchestration program, only /nodes and /provision_x should be required.
+
+To run the provisioner, simply do:
+
+```
+python ./provisioner.py
+```
 
 ### GET
 #### nodes
