@@ -18,7 +18,7 @@ For a simple orchestration program, only /nodes and /provision_x should be requi
 
 ### GET
 #### nodes
-This returns a list like this one: [{"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
+This returns information about all of the available nodes as list like this one: [{"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
 
 ```
 /nodes
@@ -34,7 +34,10 @@ This returns information about a single node. Not sure how useful this is.
 
 ### POST
 #### provision_dockers
-[List nodes] This takes a list of IDs which correspond computes. (Get this information from /nodes) [String image_name] A single image name to be deployed across the nodes. [Int ram] An amount of RAM. [Int hours] A number of hours for the service to run.
+This provisions a docker image to multiple devices for a set amount of time with a reservation on RAM
+
+This requires:
+[List nodes] [String image_name] [Int ram] [Int hours]
 
 ```
 /provision_dockers
