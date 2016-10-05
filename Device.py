@@ -63,7 +63,11 @@ class Device:
     def create_container(self, image, ports, port_bindings, ram, service_id):
         container=None
         try:
-            self.connection.pull(image)
+            try:
+                #This could be a problem if not image
+                self.connection.pull(image)
+            except Exception as err:
+                logging.warning('Error: Could not pull image %s with ip %s because: %s. Trying to use anyway', self.id, self.ip, err)
 
             container = self.connection.create_container(image=image, ports=ports,
                                                          host_config=self.connection.create_host_config(
@@ -75,10 +79,21 @@ class Device:
             logging.info("Successfully ran container on %s", self.ip)
 
             self.reserved_memory += int(ram)
+
         except Exception as err:
             logging.warning('Error: Could not start container on node %s with ip %s because: %s', self.id, self.ip, err)
         logging.info("Services on this node %s", self.service_id_to_container_id)
         return container
+
+
+    def wipe_images(self):
+        try:
+            images = self.get_image_ids()
+            for i in images:
+                self.remove_image(i)
+        except Exception as err:
+            logging.warning('Error: Removing image %s', err)
+
 
     def wipe(self):
         try:
@@ -96,8 +111,8 @@ class Device:
 
                 except Exception as err:
                     logging.warning('Error: Wiping container %s', err)
-            for i in images:
-                self.remove_image(i)
+            #for i in images:
+            #    self.remove_image(i)
         except Exception as err:
             logging.warning('Error: Wiping container %s', err)
 

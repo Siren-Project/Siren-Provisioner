@@ -168,6 +168,12 @@ class RestService:
             device.wipe()
         return "Scenario reset"
 
+    @app.route('/remove_all_images', methods=['DELETE'])
+    def api_remove_all_images():
+        for device in discovery.get_devices():
+            device.wipe_images()
+        return "Scenario reset"
+
    # if __name__ == '__main__':
    #     app.run(port=60000)
 
