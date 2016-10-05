@@ -12,7 +12,7 @@ class RestService:
     discovery = None
     @app.route('/')
     def api_root():
-        return 'Welcome'
+        return 'Read <a href="https://github.com/lyndon160/Siren-Provisioner"> https://github.com/lyndon160/Siren-Provisioner </a> for RESTful documentation'
 
     @app.route('/nodes', methods=['GET'])
     def api_nodes():
@@ -176,5 +176,5 @@ class RestService:
         discovery = dis
         self.app.use_reloader=False
         #self.app.debug = True
-        self.app.run(port=60000, threaded=True)
+        self.app.run(host='0.0.0.0', port=60000, threaded=True)
 

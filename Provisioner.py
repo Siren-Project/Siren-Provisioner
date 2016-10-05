@@ -32,7 +32,7 @@ class Provisioner:
     devices = discovery.get_devices()
   #  print(devices[0].connection.info())
   #  print(devices[1].connection.info())
-    logging.info(devices[0].get_container_ids())
+    #logging.info(devices[0].get_container_ids())
 
     lifecycle_manager = LifecycleManager(discovery)
     deployer = Deployer(discovery, lifecycle_manager)
@@ -42,8 +42,8 @@ class Provisioner:
 
     threading.Thread(target=start_rest, args=(deployer, discovery)).start()
 
-    for i in [1,2,3,4,5,6]:
-        threading.Thread(target=rand_provision, args=(deployer,)).start()
+    #for i in [1,2,3,4,5,6]:
+    #   threading.Thread(target=rand_provision, args=(deployer,)).start()
 
     #sleep(10)
     # deployer.deploy_dockers(["148.88.227.232", "148.88.227.179"], "hypriot/rpi-busybox-httpd", {80: 64441}, 0.005,  ram=100, ports=[80])

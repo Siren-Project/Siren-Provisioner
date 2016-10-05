@@ -12,7 +12,10 @@ class Discovery:
 
     def discover_devices(self):
         for ip in self.ips:
-            self.devices.append(Device(ip, ip))
+            #We need to determine if device is discovered correctly. If not, periodically look for it
+            d = Device(ip, ip)
+            if(d.info):
+                self.devices.append()
 
     def get_devices(self):
         return self.devices
