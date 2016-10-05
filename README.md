@@ -27,7 +27,7 @@ python ./provisioner.py
 
 ### GET
 #### nodes
-This returns information about all of the available nodes as list like this one: [{"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "total_memory": 1020391424, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
+This returns information about all of the available nodes as list like this one: [{"reserved_memory": 200, "available_memory": 800, "total_memory": 1024, "id": "148.88.227.179", "arch": "armv7l", "location": "residence"}, {"reserved_memory": 0, "available_memory": 1024,  "total_memory": 1024, "id": "148.88.227.232", "arch": "armv7l", "location": "residence"}]
 
 ```
 /nodes

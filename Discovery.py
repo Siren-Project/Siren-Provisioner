@@ -36,5 +36,5 @@ class Discovery:
     def get_topology(self):
         topology = []
         for device in self.devices:
-            topology.append({'id': device.get_id(), 'available_memory': device.get_total_memory() - device.get_reserved_memory(), 'total_memory': device.get_total_memory(), 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
+            topology.append({'id': device.get_id(), 'available_memory': device.get_total_memory() - device.get_reserved_memory(), 'total_memory': device.get_total_memory()/1024/1204, 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
         return topology
