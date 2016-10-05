@@ -161,6 +161,7 @@ class RestService:
 
         return "TODO. Delete container on node"
 
+    #NEED TO REMOVE THREADS ABOUT SERVICE DELETION
     @app.route('/reset_all', methods=['DELETE'])
     def api_reset_all():
         for device in discovery.get_devices():

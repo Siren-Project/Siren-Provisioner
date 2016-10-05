@@ -2,7 +2,7 @@ from Device import *
 
 #Service that discovers new devices. In future work this will be split out into a separate server.
 class Discovery:
-    ips = ['148.88.227.179', '148.88.227.232'] # read from file
+    ips = ["192.168.2.13", "192.168.2.14", "192.168.2.15", "192.168.2.16", "192.168.2.17", "192.168.2.18"] # read from file
     devices = [] #Should probably be a dictionary where device id is the key
 
     def __init__(self):
@@ -15,7 +15,7 @@ class Discovery:
             #We need to determine if device is discovered correctly. If not, periodically look for it
             d = Device(ip, ip)
             if(d.info):
-                self.devices.append()
+                self.devices.append(d)
 
     def get_devices(self):
         return self.devices
@@ -29,5 +29,5 @@ class Discovery:
     def get_topology(self):
         topology = []
         for device in self.devices:
-            topology.append({'id': device.get_id(), 'total_memory': device.get_total_memory(), 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
+            topology.append({'id': device.get_id(), 'available_memory': device.get_total_memory() - device.get_reserved_memory(), 'total_memory': device.get_total_memory(), 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
         return topology

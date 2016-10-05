@@ -73,6 +73,8 @@ class Device:
             self.connection.start(container.get('Id'))
             self.service_id_to_container_id[service_id] = container.get('Id')
             logging.info("Successfully ran container on %s", self.ip)
+
+            self.reserved_memory += int(ram)
         except Exception as err:
             logging.warning('Error: Could not start container on node %s with ip %s because: %s', self.id, self.ip, err)
         logging.info("Services on this node %s", self.service_id_to_container_id)

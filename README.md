@@ -8,6 +8,9 @@ A VNF provisioner for the Siren project. This is intended to be a modular compon
 For visualisation of the provisioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
 
 
+## TODO
+Create dynamic discovery, so that nodes can leave and join at any time.
+
 ##  Northbound RESTful API
 
 Example usage: GET http://127.0.0.1:60000/nodes
