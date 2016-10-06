@@ -155,6 +155,18 @@ class Device:
     def get_container_ids_from_service_id(self, service_id):
         return self.service_id_to_container_id[service_id]
 
+    #This returns a list of container objects that includes container id, image name.
+    def get_running_containers(self):
+        c = {}
+        try:
+            c = self.connection.containers()
+        except Exception as err:
+            logging.warning('Error: Could not get data on node %s with ip %s because: %s', self.id, self.ip, err)
+        return c
+
+    def get_running_image_names(self):
+        pass
+
     def terminate_service(self, service_id):
         logging.info("Terminating service %s on node %s with IP %s", service_id, self.id, self.ip)
         try:

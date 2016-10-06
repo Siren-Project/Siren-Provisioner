@@ -100,6 +100,9 @@ class RestService:
         # }
         data = discovery.get_topology()
         resp = Response(json.dumps(data))
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+        resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return resp
     #    return 'List of ' + url_for('api_nodes')
 
@@ -136,6 +139,25 @@ class RestService:
                 }
         js = json.dumps(data)
         resp = Response(js, status=200, mimetype='application/json')
+
+        return resp
+
+
+    @app.route('/nodes/<nodeid>/containers')
+    def api_node_containers(nodeid):
+        # Change this to dynamically grab a node from database
+        d = discovery.get_node(nodeid.replace("_", "."))
+        data = {}
+        if(d):
+           data = d.get_running_containers();
+
+        logging.info(data)
+
+        js = json.dumps(data)
+        resp = Response(js, status=200, mimetype='application/json')
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+        resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return resp
 
 
@@ -176,6 +198,9 @@ class RestService:
 
    # if __name__ == '__main__':
    #     app.run(port=60000)
+
+
+
 
     def __init__(self, dep, dis):
         global deployer, discovery
