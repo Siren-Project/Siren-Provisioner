@@ -104,6 +104,16 @@ class RestService:
         resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return resp
+
+    @app.route('/nodes/containers', methods=['GET'])
+    def api_nodes_and_containers():
+        data = discovery.get_topology_with_containers()
+        resp = Response(json.dumps(data))
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+        resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+        return resp
+
     #    return 'List of ' + url_for('api_nodes')
 
     #Just a single node at the moment

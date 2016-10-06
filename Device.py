@@ -17,8 +17,15 @@ class Device:
         self.arch = None
         self.location = None
         if self.info:
-            if 'raspberrypi' in self.info['Name']:
+            if ".2.13" in self.ip or ".2.14" in self.ip:
+                logging.info(".13 or .14 in %s", self.ip)
                 self.location = "residence"
+            elif ".2.15" in self.ip or ".2.16" in self.ip:
+                logging.info(".15 or .16 in %s", self.ip)
+                self.location = "exchange"
+            else:
+                logging.info("Higher than 16 in %s", self.ip)
+                self.location = "datacenter"
             self.total_memory = self.info['MemTotal']
             self.arch = self.info['Architecture']
             logging.info("Device memory: %sMB, location: %s, architecture: %s ", self.total_memory / 1024 / 1024,
@@ -158,6 +165,7 @@ class Device:
     #This returns a list of container objects that includes container id, image name.
     def get_running_containers(self):
         c = {}
+        logging.info("Getting running containers of %s", self.id)
         try:
             c = self.connection.containers()
         except Exception as err:

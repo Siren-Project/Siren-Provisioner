@@ -32,9 +32,20 @@ class Discovery:
             for device in self.devices:
                 if device.get_id() == node_id:
                     return device
+        logging.warning("Device not found")
 
     def get_topology(self):
         topology = []
         for device in self.devices:
-            topology.append({'id': device.get_id(), 'available_memory': device.get_total_memory() - device.get_reserved_memory(), 'total_memory': device.get_total_memory()/1024/1204, 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
+            topology.append({'id': device.get_id(), 'available_memory': (device.get_total_memory() / 1024 / 1024) - device.get_reserved_memory(), 'total_memory': device.get_total_memory()/1024/1024, 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
+        return topology
+
+
+    def get_topology_with_containers(self):
+        topology = []
+        for device in self.devices:
+            topology.append(
+                {'id': device.get_id(), 'available_memory': (device.get_total_memory() / 1024 / 1024) - device.get_reserved_memory(),
+                 'total_memory': device.get_total_memory() / 1024 / 1024, 'reserved_memory': device.get_reserved_memory(),
+                 'arch': device.get_arch(), 'location': device.get_location(), 'containers': device.get_running_containers()})
         return topology
