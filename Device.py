@@ -11,6 +11,11 @@ class Device:
         self.ip = ip
         self.id = identifier
         self.create_connection()
+
+        #WARNING REMOVE THIS AFTER DEMO. WIPES DEVICES ON STARTUP
+        self.wipe()
+
+
         self.info = self.get_info()
         self.reserved_memory = 0
         self.total_memory = None
@@ -103,6 +108,7 @@ class Device:
 
 
     def wipe(self):
+        logging.info("Wiping from %s", self.ip)
         try:
             containers = self.get_container_ids()
             images = self.get_image_ids()

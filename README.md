@@ -41,6 +41,14 @@ This returns information about a single node. Not sure how useful this is.
 ```
 
 
+#### nodes/containers
+This returns information similar to nodes but includes running containers
+```
+/nodes/containers
+```
+
+
+
 ### POST
 #### provision_dockers
 This provisions a docker image to multiple devices for a set amount of time with a reservation on RAM
@@ -49,7 +57,7 @@ This requires:
 [List nodes] [String image_name] [Int ram] [Int hours]
 
 ```
-/provision_dockers
+/nodes/provision_dockers
 ```
 
 #### provision_toscas

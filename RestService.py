@@ -131,7 +131,9 @@ class RestService:
     def api_provision_dockers():
         logging.info(request.json)
         if not request.json or 'image_name' not in request.json or 'nodes' not in request.json or 'port_bindings' not in request.json or 'ram' not in request.json or 'hours' not in request.json:
-            return "Error, did not include correct request information"
+            logging.warning("Missing infromation of provision %s", request.json)
+            resp = Response("Error, did not include correct request information", status=400, mimetype='application/json')
+            return resp
         #    def deploy_dockers(self, node_ids, image_name, port_bindings, hours, ram=0, ports=None):
         service_id = deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: request.json['port_bindings']['external']}, request.json['hours'], request.json['ram'])
         resp = Response(json.dumps({'service_id': service_id}), status=200, mimetype='application/json')
@@ -159,7 +161,7 @@ class RestService:
         d = discovery.get_node(nodeid.replace("_", "."))
         data = {}
         if(d):
-           data = d.get_running_containers();
+           data = d.get_running_containers()
 
         logging.info(data)
 

@@ -24,9 +24,7 @@ class Discovery:
         if (d.info):
             self.devices.append(d)
 
-        #WARNING REMOVE THIS AFTER DEMO. WIPES DEVICES ON STARTUP
-        for device in self.get_devices():
-            device.wipe()
+
 
     def get_devices(self):
         return self.devices
