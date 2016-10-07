@@ -29,7 +29,7 @@ class Provisioner:
 #    if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     discovery = Discovery()
-    devices = discovery.get_devices()
+    #devices = discovery.get_devices()
   #  print(devices[0].connection.info())
   #  print(devices[1].connection.info())
     #logging.info(devices[0].get_container_ids())
