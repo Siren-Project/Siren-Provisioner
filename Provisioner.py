@@ -15,7 +15,9 @@ class Provisioner:
         rest = RestService(deployer, discovery)
 
     def rand_provision(deployer):
-        deployer.deploy_dockers(["192.168.2.13", "192.168.2.14", "192.168.2.15", "192.168.2.16", "192.168.2.17", "192.168.2.18"], "hypriot/rpi-busybox-httpd", {80: randint(50000, 64444)}, randint(5, 9)*0.001,
+        with open('nodes.json') as json_data:
+            ips = json.load(json_data)['nodes']
+        deployer.deploy_dockers(ips, "hypriot/rpi-busybox-httpd", {80: randint(50000, 64444)}, randint(5, 9)*0.001,
                                 ram=randint(10, 50), ports=[80])
 
         #Restores scenario to clean slate

@@ -1,6 +1,7 @@
 from flask import Flask, url_for, request, Response
 import json
 import logging
+from random import randint
 class RestService:
 
 #class RestService:
@@ -134,9 +135,14 @@ class RestService:
             logging.warning("Missing infromation of provision %s", request.json)
             resp = Response("Error, did not include correct request information", status=400, mimetype='application/json')
             return resp
+        # Randomized port binding to overcome service on same host problem
+        random_external_port = randint(40000, 60000)
+        #port_bindings= {request.json['port_bindings']['internal']:
         #    def deploy_dockers(self, node_ids, image_name, port_bindings, hours, ram=0, ports=None):
-        service_id = deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: request.json['port_bindings']['external']}, request.json['hours'], request.json['ram'])
-        resp = Response(json.dumps({'service_id': service_id}), status=200, mimetype='application/json')
+
+        #request.json['port_bindings']['external']}
+        service_id = deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: random_external_port}, request.json['hours'], request.json['ram'])
+        resp = Response(json.dumps({'service_id': service_id, 'external_port': random_external_port}), status=200, mimetype='application/json')
         return resp
 
     @app.route('/nodes/<nodeid>')
@@ -196,11 +202,16 @@ class RestService:
         return "TODO. Delete container on node"
 
     #NEED TO REMOVE THREADS ABOUT SERVICE DELETION
-    @app.route('/reset_all', methods=['DELETE'])
+    @app.route('/reset_all', methods=['GET'])
     def api_reset_all():
         for device in discovery.get_devices():
             device.wipe()
-        return "Scenario reset"
+
+        resp = Response(json.dumps("Reset all"))
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+        resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+        return resp
 
     @app.route('/remove_all_images', methods=['DELETE'])
     def api_remove_all_images():

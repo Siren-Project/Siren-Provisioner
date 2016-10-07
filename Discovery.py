@@ -1,8 +1,11 @@
 from Device import *
 import threading
+import json
+import logging
 #Service that discovers new devices. In future work this will be split out into a separate server.
 class Discovery:
-    ips = ["192.168.2.13", "192.168.2.14", "192.168.2.15", "192.168.2.16", "192.168.2.17", "192.168.2.18"] # read from file
+    with open('nodes.json') as json_data:
+        ips = json.load(json_data)['nodes']
     devices = [] #Should probably be a dictionary where device id is the key
 
     def __init__(self):

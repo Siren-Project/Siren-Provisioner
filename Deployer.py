@@ -15,9 +15,12 @@ class Deployer:
 
 
     def deploy_dockers(self, node_ids, image_name, port_bindings, hours, ram=0, ports=None):
-        #logging.info(node_ids, image_name, port_bindings, ram, hours)
+        logging.info(port_bindings)
         #need to register service here?
         service_id = randint(1, 1000000)
+
+
+
         for node_id in node_ids:
             logging.info("Provisioning to %s", node_id)
             #Threading this might be a bad idea
