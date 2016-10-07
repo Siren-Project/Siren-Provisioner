@@ -31,7 +31,7 @@ class LifecycleManager:
 #            t = threading.Thread(target=self.terminate_service, args=service_id).start()
             self.terminate_service(service_id)
             self.services.pop(service_id)
-        threading.Timer(1, self.monitor_and_enforce).start()
+        threading.Timer(10, self.monitor_and_enforce).start()
 
     def terminate_service(self, service_id):
         # get nodes associated with service
