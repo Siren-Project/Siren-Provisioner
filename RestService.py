@@ -211,6 +211,11 @@ class RestService:
         resp.headers.add('Access-Control-Allow-Origin', '*')
         resp.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         resp.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+
+
+        #Wipe lifecycle manager
+        lifecycle.services={}
+
         return resp
 
     @app.route('/remove_all_images', methods=['DELETE'])
@@ -225,10 +230,11 @@ class RestService:
 
 
 
-    def __init__(self, dep, dis):
-        global deployer, discovery
+    def __init__(self, dep, dis, lif):
+        global deployer, discovery, lifecycle
         deployer = dep
         discovery = dis
+        lifecycle = lif
         self.app.use_reloader=False
         #self.app.debug = True
         self.app.run(host='0.0.0.0', port=60000, threaded=True)

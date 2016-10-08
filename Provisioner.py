@@ -16,14 +16,14 @@ class Provisioner:
 
 
     #Threaded function
-    def start_rest(deployer, discovery):
-        rest = RestService(deployer, discovery)
+    def start_rest(deployer, discovery, lifecycle):
+        rest = RestService(deployer, discovery, lifecycle)
         #Handle thread kill here?
 
     def rand_provision(deployer):
         with open('nodes.json') as json_data:
             ips = json.load(json_data)['nodes']
-        deployer.deploy_dockers(ips, "hypriot/rpi-busybox-httpd", {80: randint(50000, 64444)}, randint(5, 9)*0.001,
+        deployer.deploy_dockers(ips, "lyndon160/service_a", {80: randint(50000, 64444)}, randint(5, 9)*0.001,
                                 ram=randint(10, 50), ports=[80])
 
     def signal_handler(signal, frame):
@@ -51,7 +51,7 @@ class Provisioner:
 #    deployer.deploy_docker(0, "hypriot/armhf-hello-world")
 
 
-    threading.Thread(target=start_rest, args=(deployer, discovery)).start()
+    threading.Thread(target=start_rest, args=(deployer, discovery, lifecycle_manager)).start()
 
     #for i in [1,2,3,4,5,6]:
     #   threading.Thread(target=rand_provision, args=(deployer,)).start()

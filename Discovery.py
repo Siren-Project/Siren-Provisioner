@@ -5,7 +5,9 @@ import logging
 #Service that discovers new devices. In future work this will be split out into a separate server.
 class Discovery:
     with open('nodes.json') as json_data:
-        ips = json.load(json_data)['nodes']
+        data = json.load(json_data)
+        ips = data['nodes']
+        ips_location = data['nodes_locations']
     devices = [] #Should probably be a dictionary where device id is the key
 
     def __init__(self):

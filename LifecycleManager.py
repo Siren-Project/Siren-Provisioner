@@ -17,11 +17,11 @@ class LifecycleManager:
 
     def monitor_and_enforce(self):
         services_to_pop = []
-        logging.info("%s", self.services.keys())
+        logging.info("Running services %s", self.services.keys())
         #logging.info("%d", time.time())
         for service_id in self.services.keys():
 
-            logging.info("Service time left %d seconds", self.services[service_id][1]-time.time())
+            #logging.info("Service time left %d seconds", self.services[service_id][1]-time.time())
             if self.services[service_id][1]-time.time() < 1:
                 services_to_pop.append(service_id)
                 logging.info("Services to pop %s", services_to_pop)

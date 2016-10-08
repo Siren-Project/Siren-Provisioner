@@ -1,5 +1,6 @@
 from docker import Client
 import logging
+import json
 class Device:
 #    ip = ""
 #    connection = None
@@ -22,16 +23,40 @@ class Device:
         self.total_memory = None
         self.arch = None
         self.location = None
+
+        self.ips = []
+        self.ips_location = []
+
+
         if self.info:
-            if ".2.13" in self.ip or ".2.14" in self.ip:
-                logging.info(".13 or .14 in %s", self.ip)
-                self.location = "residence"
-            elif ".2.15" in self.ip or ".2.16" in self.ip:
-                logging.info(".15 or .16 in %s", self.ip)
-                self.location = "exchange"
-            else:
-                logging.info("Higher than 16 in %s", self.ip)
-                self.location = "datacenter"
+
+            with open('nodes.json') as json_data:
+                data = json.load(json_data)
+                self.ips = data['nodes']
+                self.ips_location = data['nodes_locations']
+            devices = []  # Should probably be a dictionary where device id is the key
+
+            #Change this to be read from config
+
+            if (self.ip in self.ips):
+                for ip_location in self.ips_location:
+                    if(ip_location["ip"] == self.ip):
+                        logging.info("Found location (%s) by ip (%s)", ip_location["location"], self.ip)
+                        self.location=ip_location["location"]
+
+            if(self.location == None):
+                logging.warning("Location not found for ip %s! Check nodes.json", self.ip)
+
+
+            #if ".2.13" in self.ip or ".2.14" in self.ip:
+            #    logging.info(".13 or .14 in %s", self.ip)
+            #    self.location = "residence"
+            #elif ".2.15" in self.ip or ".2.16" in self.ip:
+            #    logging.info(".15 or .16 in %s", self.ip)
+            #    self.location = "exchange"
+            #else:
+            #    logging.info("Higher than 16 in %s", self.ip)
+            #    self.location = "datacenter"
             self.total_memory = self.info['MemTotal']
             self.arch = self.info['Architecture']
 
