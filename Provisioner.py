@@ -6,15 +6,19 @@ from LifecycleManager import *
 import logging
 import threading
 import signal
-import sys
+
+import sys, os
 
 from random import randint
 
 #from time import sleep
 class Provisioner:
 
+
+    #Threaded function
     def start_rest(deployer, discovery):
         rest = RestService(deployer, discovery)
+        #Handle thread kill here?
 
     def rand_provision(deployer):
         with open('nodes.json') as json_data:
@@ -24,7 +28,11 @@ class Provisioner:
 
     def signal_handler(signal, frame):
         print('Killed')
-        sys.exit(0)
+        #for t in Provisioner.threads :
+        #    t.stop()
+        os._exit(1)
+
+       #sys.exit(0)
         #Need to kill threads too. threading.killall?
 
 
