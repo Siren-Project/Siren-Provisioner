@@ -5,6 +5,8 @@ from Deployer import *
 from LifecycleManager import *
 import logging
 import threading
+import signal
+import sys
 
 from random import randint
 
@@ -20,12 +22,11 @@ class Provisioner:
         deployer.deploy_dockers(ips, "hypriot/rpi-busybox-httpd", {80: randint(50000, 64444)}, randint(5, 9)*0.001,
                                 ram=randint(10, 50), ports=[80])
 
-        #Restores scenario to clean slate
+    def signal_handler(signal, frame):
+        print('Killed')
+        sys.exit(0)
+        #Need to kill threads too. threading.killall?
 
-
-        #Remove containers
-        #Remove images
-        #Wipe database of resources
 
     running = True
 #    if __name__ == '__main__':
@@ -57,6 +58,15 @@ class Provisioner:
     #put this in thread?
 
     logging.info("RESTful service is running")
+
+
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.pause()
+
+
+
+
+
 
 #Have a placeholder SDN input to get detailed location and context aware data? Should this not be done at the provisioner? It depends on what orchestrator it is attached to.
 #Generate topology from devices available (update variables used for REST)

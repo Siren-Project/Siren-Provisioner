@@ -15,6 +15,7 @@ class Device:
         #WARNING REMOVE THIS AFTER DEMO. WIPES DEVICES ON STARTUP
         self.wipe()
 
+        self.image_arch_modifier=""
 
         self.info = self.get_info()
         self.reserved_memory = 0
@@ -33,6 +34,11 @@ class Device:
                 self.location = "datacenter"
             self.total_memory = self.info['MemTotal']
             self.arch = self.info['Architecture']
+
+            if(self.arch == "x86_64"):
+                self.image_arch_modifier = "_x86"
+
+
             logging.info("Device memory: %sMB, location: %s, architecture: %s ", self.total_memory / 1024 / 1024,
                          self.location, self.arch)
         else:
@@ -74,9 +80,12 @@ class Device:
     #Accepts ram in MegaBytes
     def create_container(self, image, ports, port_bindings, ram, service_id):
         container=None
+
+        image+=self.image_arch_modifier
         try:
             try:
                 #This could be a problem if not image
+                logging.info("Pulling %s", image)
                 self.connection.pull(image)
             except Exception as err:
                 logging.warning('Error: Could not pull image %s with ip %s because: %s. Trying to use anyway', self.id, self.ip, err)
