@@ -11,6 +11,40 @@ class Device:
         logging.info("Creating new device with IP %s", ip)
         self.ip = ip
         self.id = identifier
+
+
+
+        self.ips = []
+        self.ips_location = []
+        #Default port number
+        self.port = "64243"
+
+        with open('nodes.json') as json_data:
+            data = json.load(json_data)
+            self.ips = data['nodes']
+            self.ips_location = data['nodes_locations']
+        devices = []  # Should probably be a dictionary where device id is the key
+
+        # Change this to be read from config
+
+        if (self.ip in self.ips):
+            for ip_location in self.ips_location:
+                if (ip_location["ip"] == self.ip):
+                    logging.info("Found location (%s) by ip (%s)", ip_location["location"], self.ip)
+                    self.location = ip_location["location"]
+                    try:
+                        if (ip_location["port"]):
+                            logging.info("Adding port of %s", ip_location["port"])
+                            self.port = ip_location["port"]
+                    except Exception as err:
+                        logging.warning('Warning: Using default port (%s) because %s not defined', self.port, err)
+
+
+        if (self.location == None):
+            logging.warning("Location not found for ip %s! Check nodes.json", self.ip)
+
+
+
         self.create_connection()
 
         #WARNING REMOVE THIS AFTER DEMO. WIPES DEVICES ON STARTUP
@@ -24,28 +58,8 @@ class Device:
         self.arch = None
         self.location = None
 
-        self.ips = []
-        self.ips_location = []
-
 
         if self.info:
-
-            with open('nodes.json') as json_data:
-                data = json.load(json_data)
-                self.ips = data['nodes']
-                self.ips_location = data['nodes_locations']
-            devices = []  # Should probably be a dictionary where device id is the key
-
-            #Change this to be read from config
-
-            if (self.ip in self.ips):
-                for ip_location in self.ips_location:
-                    if(ip_location["ip"] == self.ip):
-                        logging.info("Found location (%s) by ip (%s)", ip_location["location"], self.ip)
-                        self.location=ip_location["location"]
-
-            if(self.location == None):
-                logging.warning("Location not found for ip %s! Check nodes.json", self.ip)
 
 
             #if ".2.13" in self.ip or ".2.14" in self.ip:
@@ -77,7 +91,8 @@ class Device:
 
     def create_connection(self):
         try:
-            self.connection = Client(base_url='tcp://'+self.ip+":64243")
+            #Check here if node contains port number
+            self.connection = Client(base_url='tcp://'+self.ip+':'+self.port)
             self.info = self.connection.info()
         except Exception as err:
             logging.warning('Error: Could not start container on node %s with ip %s because: %s', self.id, self.ip, err)
