@@ -14,6 +14,16 @@ class Device:
 
 
 
+        self.image_arch_modifier=""
+
+        self.info = self.get_info()
+        self.reserved_memory = 0
+        self.total_memory = None
+        self.arch = None
+        self.location = None
+
+
+
         self.ips = []
         self.ips_location = []
         #Default port number
@@ -49,14 +59,6 @@ class Device:
 
         #WARNING REMOVE THIS AFTER DEMO. WIPES DEVICES ON STARTUP
         self.wipe()
-
-        self.image_arch_modifier=""
-
-        self.info = self.get_info()
-        self.reserved_memory = 0
-        self.total_memory = None
-        self.arch = None
-        self.location = None
 
 
         if self.info:
