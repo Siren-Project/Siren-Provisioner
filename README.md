@@ -9,7 +9,8 @@ For visualisation of the provisioner and the Fog infrastructure see: https://git
 
 
 ## TODO
-Create dynamic discovery, so that nodes can leave and join at any time.
+Dynamic discovery. Allow new devices to join and leave the infrastructure.
+Service lifecycle with failover.
 
 ##  Northbound RESTful API
 
