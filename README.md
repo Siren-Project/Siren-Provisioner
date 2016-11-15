@@ -7,10 +7,26 @@ A VNF provisioner for the Siren project. This is intended to be a modular compon
 
 For visualisation of the provisioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
 
+## Installation and running
+
+Siren's Provisioner is currently developed in python, it requires version 2.7 to be installed. 
+
+Pip requirements TODO:
+
+```
+pip install requirements.txt
+```
+
+To run the provsioner, simply do:
+
+```
+python ./provisioner.py
+```
 
 ## TODO
-Dynamic discovery. Allow new devices to join and leave the infrastructure.
-Service lifecycle with failover.
+* Dynamic discovery; Allow new devices to join and leave the infrastructure.
+* Service lifecycle with failover.
+* Make threads safe.
 
 ##  Northbound RESTful API
 
@@ -20,11 +36,7 @@ All post requests take JSON input.
 
 For a simple orchestration program, only /nodes and /provision_x should be required.
 
-To run the provisioner, simply do:
 
-```
-python ./provisioner.py
-```
 
 ### GET
 #### nodes
