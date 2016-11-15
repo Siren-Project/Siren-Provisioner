@@ -11,6 +11,12 @@ For visualisation of the provisioner and the Fog infrastructure see: https://git
 
 Siren's Provisioner is currently developed in python, it requires version 2.7 to be installed. 
 
+Clone this repository:
+
+```
+git clone https://github.com/lyndon160/Provisioner.git
+```
+
 Pip requirements TODO:
 
 ```
