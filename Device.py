@@ -27,6 +27,7 @@ class Device:
         self.ips = []
         self.ips_location = []
         #Default port number
+
         self.port = "64243"
 
         with open('nodes.json') as json_data:
@@ -36,15 +37,18 @@ class Device:
         devices = []  # Should probably be a dictionary where device id is the key
 
         # Change this to be read from config
-
         if (self.ip in self.ips):
             for ip_location in self.ips_location:
                 if (ip_location["ip"] == self.ip):
+                    #Configure this node
                     logging.info("Found location (%s) by ip (%s)", ip_location["location"], self.ip)
                     self.location = ip_location["location"]
+                    if("tls" in ip_location):
+                        if(ip_location["tls"]):
+                            self.tls=True
                     try:
                         if (ip_location["port"]):
-                            logging.info("Adding port of %s", ip_location["port"])
+                            #logging.info("Adding port of %s", ip_location["port"])
                             self.port = ip_location["port"]
                     except Exception as err:
                         logging.warning('Warning: Using default port (%s) because %s not defined', self.port, err)
@@ -62,17 +66,6 @@ class Device:
 
 
         if self.info:
-
-
-            #if ".2.13" in self.ip or ".2.14" in self.ip:
-            #    logging.info(".13 or .14 in %s", self.ip)
-            #    self.location = "residence"
-            #elif ".2.15" in self.ip or ".2.16" in self.ip:
-            #    logging.info(".15 or .16 in %s", self.ip)
-            #    self.location = "exchange"
-            #else:
-            #    logging.info("Higher than 16 in %s", self.ip)
-            #    self.location = "datacenter"
             self.total_memory = self.info['MemTotal']
             self.arch = self.info['Architecture']
 
@@ -88,13 +81,18 @@ class Device:
         self.service_id_to_container_id = {}
 
 
-        #
-        # self.location =
-
     def create_connection(self):
         try:
-            #Check here if node contains port number
-            self.connection = Client(base_url='tcp://'+self.ip+':'+self.port)
+            #TODO add tls security. Will require local key.
+            if hasattr(self, 'tls'):
+                if(self.tls):
+                    logging.warning("Warning: TLS is not yet supported. No connection made to %s", self.ip)
+            else:
+                self.tls = False
+
+            if(not self.tls):
+                logging.info("Warning: TLS not enabled for node %s", self.ip)
+                self.connection = Client(base_url='tcp://'+self.ip+':'+self.port)
             self.info = self.connection.info()
         except Exception as err:
             logging.warning('Error: Could not start container on node %s with ip %s because: %s', self.id, self.ip, err)
@@ -131,6 +129,8 @@ class Device:
                 self.connection.pull(image)
             except Exception as err:
                 logging.warning('Error: Could not pull image %s with ip %s because: %s. Trying to use anyway', self.id, self.ip, err)
+
+
 
             container = self.connection.create_container(image=image, ports=ports,
                                                          host_config=self.connection.create_host_config(

@@ -8,13 +8,12 @@ import threading
 class LifecycleManager:
 
     #Service id: ([List of nodes], duration secs)
-
-
-        #duration is in hours, supports doubles
+    #Register a new service. Duration is in hours, supports doubles
     def register_service(self, node_ids, duration, service_id):
         self.services[service_id] = (node_ids, time.time()+(duration*60*60))
         logging.info("Service time = %d seconds", duration*60*60)
 
+    #Removes services from infrastructure after they have expired.
     def monitor_and_enforce(self):
         services_to_pop = []
         logging.info("Running services %s", self.services.keys())
@@ -33,6 +32,7 @@ class LifecycleManager:
             self.services.pop(service_id)
         threading.Timer(10, self.monitor_and_enforce).start()
 
+    #Removes a service from the infrastructure by the service ID
     def terminate_service(self, service_id):
         # get nodes associated with service
         for node_id in self.services[service_id][0]:
