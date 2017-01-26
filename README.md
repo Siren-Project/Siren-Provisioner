@@ -1,4 +1,4 @@
-# Siren-Provisioner
+# Siren's Provisioner
 A VNF provisioner for the Siren project. This is intended to be a modular component that could be used with higher level orchestration logic (such as **). At the moment, it exposes the infrastructure topology (location of available resouces and the time they are held up for) through a RESTful interface. For provisioning of resources, it accepts TOSCA YAML and Docker files through a RESTful interface, to deploy the service, it uses the docker remote API. 
 
 
@@ -7,9 +7,32 @@ A VNF provisioner for the Siren project. This is intended to be a modular compon
 
 For visualisation of the provisioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
 
+## Installation and running
+
+Siren's Provisioner is currently developed in python, it requires version 2.7 to be installed. 
+
+Clone this repository:
+
+```
+git clone https://github.com/lyndon160/Provisioner.git
+```
+
+Pip requirements TODO:
+
+```
+pip install requirements.txt
+```
+
+To run the provsioner, simply do:
+
+```
+python ./provisioner.py
+```
 
 ## TODO
-Create dynamic discovery, so that nodes can leave and join at any time.
+* Dynamic discovery; Allow new devices to join and leave the infrastructure.
+* Service lifecycle with failover.
+* Make threads safe.
 
 ##  Northbound RESTful API
 
@@ -19,11 +42,7 @@ All post requests take JSON input.
 
 For a simple orchestration program, only /nodes and /provision_x should be required.
 
-To run the provisioner, simply do:
 
-```
-python ./provisioner.py
-```
 
 ### GET
 #### nodes
