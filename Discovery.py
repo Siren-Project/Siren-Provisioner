@@ -2,6 +2,7 @@ from Device import *
 import threading
 import json
 import logging
+import requests
 #Service that discovers new devices. In future work this will be split out into a separate server.
 class Discovery:
     with open('nodes.json') as json_data:
@@ -14,8 +15,20 @@ class Discovery:
         self.discover_devices()
         #this service should be a separate thread and should periodically discover_devices
 
+    def connect_and_discover(self):
+        result = requests.get("http://188.166.155.90:61112/nodes")
+        print "Nodes from discovery server :" +str(result.json())
+        return result.json()
 
     def discover_devices(self):
+        online_nodes = self.connect_and_discover()
+        for node in online_nodes:
+            #if we have not already found it through config then add it
+            if(not node['ip'] in self.ips):
+                print node['ip']
+                self.ips.append(node['ip'])
+            #Make into set
+
         for ip in self.ips:
             #We need to determine if device is discovered correctly. If not, periodically look for it.
             #Why might be not want to thread this? Device list could change.

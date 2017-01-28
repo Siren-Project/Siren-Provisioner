@@ -23,47 +23,26 @@ class Provisioner:
     def rand_provision(deployer):
         with open('nodes.json') as json_data:
             ips = json.load(json_data)['nodes']
+            #FIXME Now invalid as nodes are loaded dynamically
         deployer.deploy_dockers(ips, "lyndon160/service_a", {80: randint(50000, 64444)}, randint(5, 9)*0.001,
                                 ram=randint(10, 50), ports=[80])
 
     def signal_handler(signal, frame):
         print('Killed')
-        #for t in Provisioner.threads :
-        #    t.stop()
         os._exit(1)
 
-       #sys.exit(0)
-        #Need to kill threads too. threading.killall?
 
 
     running = True
-#    if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     discovery = Discovery()
-    #devices = discovery.get_devices()
-  #  print(devices[0].connection.info())
-  #  print(devices[1].connection.info())
-    #logging.info(devices[0].get_container_ids())
 
     lifecycle_manager = LifecycleManager(discovery)
     deployer = Deployer(discovery, lifecycle_manager)
-        #Discover devices and what they're currently doing (Get facts and if services are already running).
-#    deployer.deploy_docker(0, "hypriot/armhf-hello-world")
 
 
     threading.Thread(target=start_rest, args=(deployer, discovery, lifecycle_manager)).start()
 
-    #for i in [1,2,3,4,5,6]:
-    #   threading.Thread(target=rand_provision, args=(deployer,)).start()
-
-    #sleep(10)
-    # deployer.deploy_dockers(["148.88.227.232", "148.88.227.179"], "hypriot/rpi-busybox-httpd", {80: 64441}, 0.005,  ram=100, ports=[80])
-    # deployer.deploy_dockers(["148.88.227.232", "148.88.227.179"], "hypriot/rpi-busybox-httpd", {80: 64442}, 0.006, ram=500, ports=[80])
-    # deployer.deploy_dockers(["148.88.227.232", "148.88.227.179"], "hypriot/rpi-busybox-httpd", {80: 64443}, 0.007, ram=50, ports=[80])
-    # deployer.deploy_dockers(["148.88.227.232", "148.88.227.179"], "hypriot/rpi-busybox-httpd", {80: 64444}, 0.009, ram=10, ports=[80])
-
-
-    #put this in thread?
 
     logging.info("RESTful service is running")
 

@@ -132,7 +132,7 @@ class RestService:
     def api_provision_dockers():
         logging.info(request.json)
         if not request.json or 'image_name' not in request.json or 'nodes' not in request.json or 'port_bindings' not in request.json or 'ram' not in request.json or 'hours' not in request.json:
-            logging.warning("Missing infromation of provision %s", request.json)
+            logging.warning("Missing information of provision %s", request.json)
             resp = Response("Error, did not include correct request information", status=400, mimetype='application/json')
             return resp
         # Randomized port binding to overcome service on same host problem
@@ -143,6 +143,26 @@ class RestService:
         #request.json['port_bindings']['external']}
         service_id = deployer.deploy_dockers(request.json['nodes'], request.json['image_name'], {request.json['port_bindings']['internal']: random_external_port}, request.json['hours'], request.json['ram'])
         resp = Response(json.dumps({'service_id': service_id, 'external_port': random_external_port}), status=200, mimetype='application/json')
+        return resp
+
+    '''Deploys an agent to listed nodes. Agents restart automatically on boot.
+        Previous installed agent will be remove to avoid conflicts'''
+    @app.route('/nodes/provision_agents', methods=['POST', 'GET'])
+    def api_provision_agents():
+        logging.info(request.json)
+        if not request.json:
+            logging.warning("Blank request %s", request.json)
+        if not request.json or 'image_name' not in request.json or 'nodes' not in request.json:
+            logging.warning("Missing information of provision %s", request.json)
+            resp = Response("Error, did not include correct request information", status=400, mimetype='application/json')
+            return resp
+        # Randomized port binding to overcome service on same host problem
+        # port_bindings= {request.json['port_bindings']['internal']:
+        #    def deploy_dockers(self, node_ids, image_name, port_bindings, hours, ram=0, ports=None):
+
+        # request.json['port_bindings']['external']}
+        deployer.deploy_agents(request.json['nodes'], request.json['image_name'])
+        resp = Response(json.dumps({"Agents deployed":True}), status=200, mimetype='application/json')
         return resp
 
     @app.route('/nodes/<nodeid>')

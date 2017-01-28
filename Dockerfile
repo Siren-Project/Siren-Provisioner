@@ -2,7 +2,7 @@ From hypriot/armhf-busybox
 
 RUN mkdir /www
 RUN ls
-RUN touch /www/index.html
-RUN echo "<body style='background-color:#f3dfa2;'><div style=' text-align:center;'><h1> Service Provider C</h1></div></body>" > /www/index.html
+ADD video.mp4 /www/
+ADD index.html /www/
 CMD /bin/busybox httpd -f -p 80 -h /www
 EXPOSE 80
