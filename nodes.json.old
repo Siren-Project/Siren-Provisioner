@@ -1,0 +1,2 @@
+{"nodes": ["192.168.2.13", "192.168.2.14", "192.168.2.15", "192.168.2.16", "192.168.2.17", "192.168.2.18"],
+"nodes_locations": [{"ip":"192.168.2.13", "location": "residence"}, {"ip":"192.168.2.14", "location": "residence"}, {"ip":"192.168.2.15", "location": "exchange"}, {"ip":"192.168.2.16", "location": "exchange"}, {"ip":"192.168.2.17", "location": "datacenter"}, {"ip":"192.168.2.18", "location": "datacenter"}]}
