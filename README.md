@@ -20,13 +20,13 @@ git clone https://github.com/lyndon160/Siren-Provisioner.git
 Pip requirements TODO:
 
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 To run the provsioner, simply do:
 
 ```
-python ./provisioner.py
+python ./Provisioner.py
 ```
 
 ## TODO
