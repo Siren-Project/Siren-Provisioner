@@ -13,7 +13,7 @@ class Discovery:
 
     def __init__(self):
         self.discover_devices()
-        #this service should be a separate thread and should periodically discover_devices
+        # TODO this service should be a separate thread and should periodically discover_devices
 
     def connect_and_discover(self):
         result = requests.get("http://188.166.155.90:61112/nodes")
@@ -24,9 +24,9 @@ class Discovery:
         online_nodes = self.connect_and_discover()
         for node in online_nodes:
             #if we have not already found it through config then add it
-            if(not node['ip'] in self.ips):
-                print node['ip']
-                self.ips.append(node['ip'])
+            if(not node['remote_ip'] in self.ips):
+                print node['remote_ip']
+                self.ips.append(node['remote_ip'])
             #Make into set
 
         for ip in self.ips:
