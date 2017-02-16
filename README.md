@@ -14,7 +14,7 @@ Siren's Provisioner is currently developed in python, it requires version 2.7 to
 Clone this repository:
 
 ```
-git clone https://github.com/lyndon160/Provisioner.git
+git clone https://github.com/lyndon160/Siren-Provisioner.git
 ```
 
 Pip requirements TODO:
