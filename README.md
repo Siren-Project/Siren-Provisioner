@@ -1,13 +1,19 @@
 # Siren's Provisioner
 A VNF provisioner for the Siren project. This is intended to be a modular component that could be used with higher level orchestration logic (such as **). At the moment, it exposes the infrastructure topology (location of available resouces and the time they are held up for) through a RESTful interface. For provisioning of resources, it accepts TOSCA YAML and Docker files through a RESTful interface, to deploy the service, it uses the docker remote API. 
 
-
 **Complementary component to this: https://github.com/broadbent/airship
-
 
 For visualisation of the provisioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
 
-## Installation and running
+
+# Table of Contents
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [TODO](#todo)
+4. [Northbound RESTful API](#northbound-restful-api)
+5. [Evaluation](#evaluation)
+
+## Installation
 
 Siren's Provisioner is currently developed in python, it requires version 2.7 to be installed. 
 
@@ -22,6 +28,8 @@ Pip requirements TODO:
 ```
 pip install -r requirements.txt
 ```
+
+## Usage
 
 To run the provsioner, simply do:
 
@@ -97,3 +105,7 @@ TODO
 ```
 /remove_service
 ```
+
+## Evaluation
+
+TODO insert graphs and explaination
