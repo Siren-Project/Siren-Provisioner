@@ -5,6 +5,8 @@ A VNF provisioner for the Siren project. This is intended to be a modular compon
 
 For visualisation of the provisioner and the Fog infrastructure see: https://github.com/lyndon160/Siren-Visualiser
 
+![Siren Architecture diagram](https://raw.githubusercontent.com/lyndon160/Siren-Provisioner/master/examples/siren-arch.png)
+
 
 ## Table of Contents
 1. [Installation](#installation)
@@ -108,4 +110,4 @@ TODO
 
 ## Evaluation
 
-TODO insert graphs and explaination
+![Evaluation diagram]()
