@@ -109,5 +109,12 @@ TODO
 ```
 
 ## Evaluation
+![Evaluation topology]()
 
-![Evaluation diagram]()
+The evaluation so far compares the cost to the network in three scenarios: 1) a vCache VNF being deployed using a first fit clustering policy 2) a vCache VNF being deployed using an context-optimised policy and 3) using no CDN and requesting video directly from content provider source. The vCache is deployed to the NFVI (Raspberry Pi) as a Docker container. The video in use for the case study is a 1080p version of the Big Buck Bunny standard testing video and is 276.1MB in size. During each experiment iteration, three clients are watching the video and traffic is being monitored and recorded on the aggregate switch to evaluate the difference between deployment techniques. In the in second test, where optimised placement is used, the content provider requests information about latency between the service customers and the available NFVIs to determine the closest one to deploy to.
+
+![Evaluation diagram](https://raw.githubusercontent.com/lyndon160/Siren-Provisioner/master/examples/siren-eval-final.png)
+
+The diagram above shows the results of three VNF placement techniques. The stacked bar chart shows live data which is data that was pulled over the aggregate switch whilst clients were watching the video, and pre-pushed data which is the cost of pushing the vCache VNF.
+
+In this instance we can see that the contextual information provided by siren allowed for the VNF to be placed much closer to the client on NFVI B, thus reducing observed traffic on the aggregate switch by two thirds when compared to no caching. More importantly, a suboptimal placement policy such as first fit which in this instance places the VNF on NFVI A can cost more to the network when compared with no caching, this is due to the VNF being pushed but and the content to being requested over the aggregate switch.
