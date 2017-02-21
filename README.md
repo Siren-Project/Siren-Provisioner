@@ -109,7 +109,7 @@ TODO
 ```
 
 ## Evaluation
-![Evaluation topology]()
+![Evaluation topology](https://raw.githubusercontent.com/lyndon160/Siren-Provisioner/master/examples/test-network.png)
 
 The evaluation so far compares the cost to the network in three scenarios: 1) a vCache VNF being deployed using a first fit clustering policy 2) a vCache VNF being deployed using an context-optimised policy and 3) using no CDN and requesting video directly from content provider source. The vCache is deployed to the NFVI (Raspberry Pi) as a Docker container. The video in use for the case study is a 1080p version of the Big Buck Bunny standard testing video and is 276.1MB in size. During each experiment iteration, three clients are watching the video and traffic is being monitored and recorded on the aggregate switch to evaluate the difference between deployment techniques. In the in second test, where optimised placement is used, the content provider requests information about latency between the service customers and the available NFVIs to determine the closest one to deploy to.
 
