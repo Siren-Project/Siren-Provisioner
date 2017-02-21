@@ -30,7 +30,7 @@ class Discovery:
             #Make into set
 
         for ip in self.ips:
-            #We need to determine if device is discovered correctly. If not, periodically look for it.
+             #We need to determine if device is discovered correctly. If not, periodically look for it.
             #Why might be not want to thread this? Device list could change.
             threading.Thread(target=self.discover_device, args=(ip, ip)).start()
             #d = Device(ip, ip)
