@@ -3,8 +3,12 @@ import threading
 import json
 import logging
 import requests
-#Service that discovers new devices. In future work this will be split out into a separate server.
+
+
 class Discovery:
+
+    """Discovery is a service that discovers new devices. This communicates with a separate discovery server."""
+
     with open('nodes.json') as json_data:
         data = json.load(json_data)
         ips = data['nodes']
@@ -30,7 +34,7 @@ class Discovery:
             #Make into set
 
         for ip in self.ips:
-             #We need to determine if device is discovered correctly. If not, periodically look for it.
+            #We need to determine if device is discovered correctly. If not, periodically look for it.
             #Why might be not want to thread this? Device list could change.
             threading.Thread(target=self.discover_device, args=(ip, ip)).start()
             #d = Device(ip, ip)
@@ -41,8 +45,6 @@ class Discovery:
         d = Device(ip, id)
         if (d.info):
             self.devices.append(d)
-
-
 
     def get_devices(self):
         return self.devices
