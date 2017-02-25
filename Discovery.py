@@ -41,6 +41,7 @@ class Discovery:
             #if(d.info):
                # self.devices.append(d)
 
+    """Attempts to connect with a single device"""
     def discover_device(self, ip, id):
         d = Device(ip, id)
         if (d.info):
@@ -48,7 +49,7 @@ class Discovery:
 
     def get_devices(self):
         return self.devices
-
+    """Gets information about a single node. Requires a node_id (IP address and port number)"""
     def get_node(self, node_id):
         if self.devices:
             for device in self.devices:
