@@ -41,16 +41,18 @@ class Discovery:
             #if(d.info):
                # self.devices.append(d)
 
-    """Attempts to connect with a single device"""
+
     def discover_device(self, ip, id):
+        """Attempts to connect with a single device"""
         d = Device(ip, id)
         if (d.info):
             self.devices.append(d)
 
     def get_devices(self):
         return self.devices
-    """Gets information about a single node. Requires a node_id (IP address and port number)"""
+
     def get_node(self, node_id):
+        """Gets information about a single node. Requires a node_id (IP address and port number)"""
         if self.devices:
             for device in self.devices:
                 if device.get_id() == node_id:
@@ -58,6 +60,7 @@ class Discovery:
         logging.warning("Device not found")
 
     def get_topology(self):
+        """Gets information about available devices"""
         topology = []
         for device in self.devices:
             topology.append({'id': device.get_id(), 'available_memory': (device.get_total_memory() / 1024 / 1024) - device.get_reserved_memory(), 'total_memory': device.get_total_memory()/1024/1024, 'reserved_memory': device.get_reserved_memory(), 'arch': device.get_arch(), 'location': device.get_location()})
