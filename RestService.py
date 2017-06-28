@@ -244,6 +244,13 @@ class RestService:
             device.wipe_images()
         return "Scenario reset"
 
+    @app.route('/random_provision', methods=['GET'])
+    def api_random_provision():
+        deployer.rand_provision()
+        return "Random provision"
+
+
+
    # if __name__ == '__main__':
    #     app.run(port=60000)
 

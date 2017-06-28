@@ -16,21 +16,31 @@ class Discovery:
     devices = [] #Should probably be a dictionary where device id is the key
 
     def __init__(self):
+        self.offline = True
         self.discover_devices()
         # TODO this service should be a separate thread and should periodically discover_devices
 
     def connect_and_discover(self):
-        result = requests.get("http://188.166.155.90:61112/nodes")
-        print "Nodes from discovery server :" +str(result.json())
-        return result.json()
+        # TODO get this from file.
+
+
+
+        while True:
+            try:
+                result = requests.get("http://188.166.155.90:61112/nodes")
+                print "Nodes from discovery server :" +str(result.json())
+                return result.json()
+            except Exception as err:
+                print err
 
     def discover_devices(self):
-        online_nodes = self.connect_and_discover()
-        for node in online_nodes:
-            #if we have not already found it through config then add it
-            if(not node['remote_ip'] in self.ips):
-                print node['remote_ip']
-                self.ips.append(node['remote_ip'])
+        if self.offline == False:
+            online_nodes = self.connect_and_discover()
+            for node in online_nodes:
+                #if we have not already found it through config then add it
+                if(not node['remote_ip'] in self.ips):
+                    print node['remote_ip']
+                    self.ips.append(node['remote_ip'])
             #Make into set
 
         for ip in self.ips:

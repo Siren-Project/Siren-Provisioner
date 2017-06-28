@@ -1,6 +1,8 @@
 import logging
 import threading
+import json
 from random import randint
+import random
 
 class Deployer:
 
@@ -22,6 +24,13 @@ class Deployer:
             threading.Thread(target=self.discovery.get_node(node_id).add_agent,
                          args=(image_name, 250, service_id)).start()
 
+    def rand_provision(self):
+        with open('nodes.json') as json_data:
+            ips = json.load(json_data)['nodes']
+        service_names = ['a', 'b', 'c']
+        service_name = random.choice(service_names)
+        self.deploy_dockers(ips, "lyndon160/service_"+service_name+"_video", {80: randint(50000, 64444)}, randint(5, 9) * 0.001,
+                       ram=randint(10, 50), ports=[80])
 
     def deploy_dockers(self, node_ids, image_name, port_bindings, hours, ram=0, ports=None):
         logging.info(port_bindings)
